@@ -14,26 +14,21 @@ var myEach = function ( ary, doThis ) {
   }
 };
 
-var printThis = function( x ) {
-  console.log(x * 2);
-};
-
-// var myMap = function ( ary, doThis ) {
-//   var newAry = [];
-//   for (var i = 0; i < ary.length; i++ ) {
-//     newAry.push(doThis(ary[i]));
+// Prototype!
+// Array.prototype.myEach = function ( doThis ) {
+//   for (var i = 0; i < this.length; i++ ) {
+//     doThis(this[i]);
 //   }
-//   console.log(newAry);
 // };
 
 var myMap = function ( ary, doThis ) {
   var newAry = [];
-  var modifyThis = function ( array, doThis ) {
-    myEach(ary, doThis);
-    // newAry.push(doThis)
-  }
-  newAry.push(modifyThis(ary, doThis));
-    
+  
+  myEach(ary, function (el) {
+    //side effect: add the el to the ary
+    newAry.push(doThis(el));
+  });
+
   console.log(newAry);
 };
 
@@ -41,7 +36,35 @@ var tripleThis = function( x ) {
   return x * 3;
 };
 
-// myEach([4,5,6], printThis);
-// ary.myMap {doThis}
+// myMap([4, 5, 6], tripleThis);
 
-myMap([4, 5, 6], tripleThis);
+function compareNumbers(a, b) {
+  return a - b;
+}
+
+var arrayMedian = function ( arr ) {
+  var newArr = arr.sort(compareNumbers);
+  if (arr.length % 2 === 0) {
+    return (newArr[(newArr.length / 2) - 1] + newArr[(newArr.length / 2)]) / 2; 
+  }
+  else {
+    return newArr[Math.floor(newArr.length / 2)]; 
+  }
+};
+
+var someFunc = function (x, y) {
+  return x + y;
+};
+
+var myInject = function ( arr, someFunc ) {
+  var thingSummed = ""
+  
+  myEach(arr, function (el) {
+    thingSummed = someFunc(thingSummed, el);
+  });
+  console.log(thingSummed);
+}
+
+// myInject(["Yay ", "for ", "strings!"], someFunc );
+
+
